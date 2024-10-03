@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "600031344681",
+    "project_id": "carstation-d22d5",
+    "storage_bucket": "carstation-d22d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600031344681:android:755f328bee5da0cdb28438",
+        "android_client_info": {
+          "package_name": "com.example.task_car_services"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdFHDJ0pQ07tefUmXOLehbCWZfVX2fbrU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
