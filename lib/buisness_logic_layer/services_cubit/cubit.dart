@@ -13,15 +13,15 @@ class ServicesCubit extends Cubit<ServicesState>{
 
   List<ServiceModel> services=[];
 
-  void getAllServices({required String uid}){
-    FirebaseFirestore.instance.collection('users').doc(uid).collection('services').get().then((value){
+  Future getAllServices({required String uid})async{
+    services.clear();
+   await  FirebaseFirestore.instance.collection('users').doc(uid).collection('services').get().then((value){
       value.docs.forEach((element){
+        services=[];
         services.add(ServiceModel.fromJson(element.data()));
+
       });
       emit(GetAllServicesSuccecssState());
-
-
-
 
     }).catchError((error){
       print('there is an error in get a;; services $error');

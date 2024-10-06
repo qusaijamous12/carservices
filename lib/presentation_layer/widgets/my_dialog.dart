@@ -19,13 +19,13 @@ class MyDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(kPadding)
       ),
-      title: Text('$title',style:const TextStyle(color: Colors.blue,fontWeight: FontWeight.bold,fontSize: 20),),
+      title: Text('$title',style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold,fontSize: 20),),
       content: Text('$content',style:const TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w500),),
       actions: [
-        TextButton(onPressed:onPressed , child:const Text('Open')),
+        TextButton(onPressed:onPressed , child: Text('Open',style: TextStyle(color: Colors.blue[800]),)),
         TextButton(onPressed: (){
           Navigator.pop(context);
-        }, child:const Text('Close'))
+        }, child: Text('Close',style: TextStyle(color: Colors.blue[800])))
 
       ],
     );

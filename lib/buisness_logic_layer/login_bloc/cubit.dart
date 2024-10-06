@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:task_car_services/buisness_logic_layer/login_bloc/state.dart';
+import 'package:task_car_services/buisness_logic_layer/map_cubit/cubit.dart';
+import 'package:task_car_services/buisness_logic_layer/services_cubit/cubit.dart';
 import 'package:task_car_services/data_layer/model/login_model.dart';
 import 'package:task_car_services/presentation_layer/widgets/my_dialog.dart';
 
@@ -19,13 +21,16 @@ class LoginCubit extends Cubit<LoginState>{
 
   dynamic ?uid;
 
-  void loginInWithEmailAndPassword({required String email,required String password}){
+  void loginInWithEmailAndPassword(context,{required String email,required String password}){
 
     emit(LoadingLoginState());
     FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value)async{
       if(value.user!.uid!=null){
         uid=value.user!.uid;
+
         await getUserData(uid: value.user!.uid);
+
+       // await ServicesCubit.get(context).getAllServices(uid: uid);
 
       }
 

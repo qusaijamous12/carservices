@@ -24,15 +24,9 @@ class _MapScreenState extends State<MapScreen> {
   final Set<Marker> markers = {};
 
   @override
-  void initState(){
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var cubit=MapCubit.get(context);
-    var loginCubit=LoginCubit.get(context);
+
     return  BlocBuilder<MapCubit,MapState>(
       builder: (context,state){
         return  ConditionalBuilder(
@@ -42,7 +36,7 @@ class _MapScreenState extends State<MapScreen> {
               markers:{
                 for(int i=0;i<cubit.stationServices.length;i++)...{
                   Marker(markerId: MarkerId('$i'),
-                    position: LatLng(cubit.stationServices[i].longtitue!, cubit.stationServices[i].latitude!),
+                    position: LatLng(cubit.stationServices[i].latitude!, cubit.stationServices[i].longtitue!),
                       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
                     onTap: (){
                     showDialog(context: context, builder: (context)=>MyDialog(title: '${cubit.stationServices[i].userName !+' Station' }', content: 'Services', onPressed: (){

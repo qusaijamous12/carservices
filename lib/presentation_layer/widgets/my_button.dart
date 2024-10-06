@@ -22,7 +22,7 @@ class _MyButtonState extends State<MyButton> {
         height: 50,
         alignment: AlignmentDirectional.center,
         decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Colors.blue[800],
             borderRadius: BorderRadiusDirectional.circular(kPadding)
         ),
         child:Text(

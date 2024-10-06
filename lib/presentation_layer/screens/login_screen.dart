@@ -36,11 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             const Text(
+              Text(
                   'Login'
               ,
               style: TextStyle(
-                color: Colors.blue,
+                color: Colors.blue[800],
                 fontWeight: FontWeight.bold,
                 fontSize: 40
               ),),
@@ -80,10 +80,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: (){
                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const RegisterScreen()), (x)=>false);
                       },
-                      child:const Text(
+                      child: Text(
                         'Register',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.blue[800],
                           fontWeight: FontWeight.bold,
                           fontSize: 16
                         ),
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return ConditionalBuilder(
                       condition: state is !LoadingLoginState,
                       builder: (context)=>MyButton(title: 'Login', onPress: (){
-                        cubit.loginInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+                        cubit.loginInWithEmailAndPassword(context,email: emailController.text, password: passwordController.text);
                       }),
                       fallback: (context)=>const Center(child: CircularProgressIndicator(color: Colors.blue,)));
                 },

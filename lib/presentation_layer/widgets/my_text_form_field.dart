@@ -15,7 +15,6 @@ class MyTextFormField extends StatefulWidget {
 
 class _MyTextFormFieldState extends State<MyTextFormField> {
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,6 +29,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
         decoration:InputDecoration(
           border: InputBorder.none,
           labelText: '${widget.hintText}',
+
           prefixIcon:widget.prefixIcon,
 
         ),

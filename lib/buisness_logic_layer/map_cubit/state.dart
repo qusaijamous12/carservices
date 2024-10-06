@@ -12,6 +12,12 @@ class GetStationPlacesSuccessState extends MapState{}
 
 class GetStationPlacesErrorState extends MapState{}
 
+class SendMessageSuccessState extends MapState{}
+
+class SendMessageErrorState extends MapState{}
+
+class GetMessageSuccessState extends MapState{}
+
 
 
 
