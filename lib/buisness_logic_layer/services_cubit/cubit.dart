@@ -12,7 +12,7 @@ class ServicesCubit extends Cubit<ServicesState>{
 
 
   List<ServiceModel> services=[];
-
+//
   Future getAllServices({required String uid})async{
     services.clear();
    await  FirebaseFirestore.instance.collection('users').doc(uid).collection('services').get().then((value){
