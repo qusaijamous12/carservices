@@ -44,7 +44,7 @@ class _MyCarState extends State<MyCar> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: (){Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeScreen()), (c)=>false);}, icon:const Icon(Icons.navigate_before,color: Colors.white,)),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[800],
         title:const Text('Car Details',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),),
       ),
       body: ConditionalBuilder(
