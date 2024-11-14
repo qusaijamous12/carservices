@@ -10,31 +10,39 @@ import '../../shared/utils/utils.dart';
 import 'home_screen.dart';
 
 class MyCar extends StatefulWidget {
-  const MyCar({super.key,required this.stationUid,required this.carNumber});
+  const MyCar({super.key,required this.stationUid});
   final stationUid;
-  final carNumber;
+
 
   @override
   State<MyCar> createState() => _MyCarState();
 }
 
 class _MyCarState extends State<MyCar> {
-   ServiceModel ?serviceModel;
-   bool x=false;
+  List<ServiceModel> serviceModels = []; // Change to a list
+
+  bool x=false;
 
   @override
   void initState() {
     FirebaseFirestore.instance.collection('users').doc(widget.stationUid).collection('services').get().then((value){
       value.docs.forEach((element){
         if(LoginCubit.get(context).uid==element['uid']){
-          print('qqqqq');
-           serviceModel=ServiceModel(element['car_number'], element['car_name'], element['services'], element['price'],  element['uid'], element['percentage']);
-           x=true;
+          serviceModels.add(ServiceModel(
+            element['car_number'],
+            element['car_name'],
+            element['services'],
+            element['price'],
+            element['uid'],
+            element['percentage'],
+          ));
+
            setState(() {
 
            });
         }
       });
+      x=true;
     });
     super.initState();
   }
@@ -43,7 +51,7 @@ class _MyCarState extends State<MyCar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeScreen()), (c)=>false);}, icon:const Icon(Icons.navigate_before,color: Colors.white,)),
+        leading: IconButton(onPressed: (){Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeScreen(uid: '',)), (c)=>false);}, icon:const Icon(Icons.navigate_before,color: Colors.white,)),
         backgroundColor: Colors.blue[800],
         title:const Text('Car Details',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),),
       ),
@@ -53,94 +61,26 @@ class _MyCarState extends State<MyCar> {
             padding: const EdgeInsets.all(kPadding),
             child: Column(
               children: [
-                Card(
-                  color: Colors.white,
-                  elevation: 20,
-                  child: Expanded(
-                    child: Container(
-                      padding:const EdgeInsetsDirectional.all(kPadding),
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUFlo2IjF3ZPjaZKxkjSKJPQ6ZAsA-62OB6g&s'),
-                                radius: 80,
-                                    
-                              ),
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.center,
-                          ),
-                          const SizedBox(
-                            height: kPadding,
-                          ),
-                          Text(
-                            'Car Name: ${serviceModel!.carName}',
-                            style:const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500
-                            ),
-                          ),
-                          const SizedBox(
-                            height: kPadding/2,
-                          ),
-                          Text(
-                            'Services is :${serviceModel!.services}',
-                            style:const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500
-                            ),
-                          ),
-                          const SizedBox(
-                            height: kPadding/2,
-                          ),
-                          Text(
-                            'Price is ${serviceModel!.price}\$',
-                            style:const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500
-                            ),
-                                    
-                          ),
-                          const SizedBox(
-                            height: kPadding,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Column(
-                                children: [
-                                  CustomPaint(
-                                    size:const Size(100, 100), // Si
-                                    painter: CirclePainter(percentage:serviceModel!.percenatge ),
-                                  ),
-                                  const SizedBox(
-                                    height: kPadding/4,
-                                  ),
-                                  Text(
-                                    '${serviceModel!.percenatge} %',
-                                    style:const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          )
-                                    
-                        ],
+                Expanded(
+                  child: ListView.separated(
+                      itemBuilder: (context,index)=>buildMyCarItem(serviceModels[index]),
+                      separatorBuilder: (context,index)=>const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ),
-                ),
+                      itemCount: serviceModels.length),
+                )
 
               ],
             ),
           ),
-          fallback: (context)=>const Center(child:  Text('There is no cars for you!'))),
+          fallback: (context){
+            if(serviceModels.length==0){
+             return const Center(child:  Text('There is no cars for you !'));
+            }
+            else{
+            return  const Center(child:  CircularProgressIndicator());
+            }
+          }),
     );
   }
 }
@@ -181,3 +121,86 @@ class CirclePainter extends CustomPainter {
     return true; // Repaint when percentage changes
   }
 }
+Widget buildMyCarItem(ServiceModel model)=> Card(
+  color: Colors.white,
+  elevation: 20,
+  child: Expanded(
+    child: Container(
+      padding:const EdgeInsetsDirectional.all(kPadding),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUFlo2IjF3ZPjaZKxkjSKJPQ6ZAsA-62OB6g&s'),
+                radius: 80,
+
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          const SizedBox(
+            height: kPadding,
+          ),
+          Text(
+            'Car Name: ${model.carName}',
+            style:const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w500
+            ),
+          ),
+          const SizedBox(
+            height: kPadding/2,
+          ),
+          Text(
+            'Services is :${model.services}',
+            style:const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w500
+            ),
+          ),
+          const SizedBox(
+            height: kPadding/2,
+          ),
+          Text(
+            'Price is ${model.price}\$',
+            style:const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w500
+            ),
+
+          ),
+          const SizedBox(
+            height: kPadding,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Column(
+                children: [
+                  CustomPaint(
+                    size:const Size(100, 100), // Si
+                    painter: CirclePainter(percentage:model.percenatge ),
+                  ),
+                  const SizedBox(
+                    height: kPadding/4,
+                  ),
+                  Text(
+                    '${model.percenatge} %',
+                    style:const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                    ),
+                  )
+                ],
+              ),
+            ],
+          )
+
+        ],
+      ),
+    ),
+  ),
+);

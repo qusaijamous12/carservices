@@ -64,6 +64,27 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               MyTextFormField(textController: passwordController, hintText: 'Password',prefixIcon:const Icon(Icons.lock_outline),keyBoardType: TextInputType.visiblePassword,),
               const SizedBox(
+                height: kPadding/2,
+              ),
+              TextButton(
+                  onPressed: (){
+                    if(emailController.text.isEmpty){
+                      MyToast.showToast(title: 'Email is required');
+                    }
+                    else{
+                      LoginCubit.get(context).forgetPassword(email: emailController.text);
+                    }
+
+                  },
+                  child: Text(
+                    'Forget password?',
+                     style:  TextStyle(
+                          color: Colors.blue[800],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16
+                      )
+                  )),
+              const SizedBox(
                 height: kPadding*3,
               ),
               Row(
@@ -99,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     MyToast.showToast(title: 'Login Success');
                     emailController.text='';
                     passwordController.text='';
-                    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>const HomeScreen()), (x)=>false);
+                    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=> HomeScreen(uid:LoginCubit.get(context).uid ,)), (x)=>false);
 
                   }
                   else if(state is LoginErrorState ||state is GetUserDataErrorState){

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_car_services/buisness_logic_layer/map_cubit/cubit.dart';
 import 'package:task_car_services/buisness_logic_layer/services_cubit/cubit.dart';
+import 'package:task_car_services/presentation_layer/screens/splash_screen.dart';
 
 import '../../buisness_logic_layer/login_bloc/cubit.dart';
 import '../../buisness_logic_layer/register_cubit/cubit.dart';
@@ -25,9 +26,9 @@ class MyApp extends StatelessWidget {
 
 
       ],
-      child: MaterialApp(
+      child:const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:OnBoardingScreen() ,
+        home:SplashScreen() ,
       ),
     );
   }

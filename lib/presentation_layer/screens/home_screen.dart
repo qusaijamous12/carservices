@@ -12,7 +12,8 @@ import 'package:task_car_services/shared/utils/utils.dart';
 import '../../buisness_logic_layer/map_cubit/cubit.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key,required this.uid});
+   final String uid;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,12 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    if(LoginCubit.get(context).loginModel.status==1){
-      ServicesCubit.get(context).getAllServices(uid: LoginCubit.get(context).uid);
-    }
-    else{
+    if(LoginCubit.get(context).loginModel.status==2){
       MapCubit.get(context).getMyLocation(context);
     }
+
     super.initState();
   }
 

@@ -10,7 +10,9 @@ class RegisterCubit extends Cubit<RegisterState>{
   RegisterCubit():super(InitialRegisterState());
 
   static RegisterCubit get(context)=>BlocProvider.of(context);
+
   late LoginModel loginModel;
+
   dynamic uid;
 
   Future createAccount({required String email,required String password,required String phoneNumber,required String userName,required int status,double ?lattiude=0,double ?longtitude=0})async{

@@ -18,6 +18,21 @@ class SendMessageErrorState extends MapState{}
 
 class GetMessageSuccessState extends MapState{}
 
+class LoadingAddMyCarState extends MapState{}
+
+class AddMyCarsSuccessState extends MapState{}
+
+class AddMyCarsErrorState extends MapState{}
+
+class GetMyCarsSuccessState extends MapState{}
+
+class GetMyCarsErrorState extends MapState{}
+
+class LoadingGetMyCarsState extends MapState{}
+
+
+
+
 
 
 

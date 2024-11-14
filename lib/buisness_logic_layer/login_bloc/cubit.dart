@@ -9,6 +9,7 @@ import 'package:task_car_services/buisness_logic_layer/map_cubit/cubit.dart';
 import 'package:task_car_services/buisness_logic_layer/services_cubit/cubit.dart';
 import 'package:task_car_services/data_layer/model/login_model.dart';
 import 'package:task_car_services/presentation_layer/widgets/my_dialog.dart';
+import 'package:task_car_services/presentation_layer/widgets/my_toast.dart';
 
 class LoginCubit extends Cubit<LoginState>{
 
@@ -27,8 +28,8 @@ class LoginCubit extends Cubit<LoginState>{
     FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value)async{
       if(value.user!.uid!=null){
         uid=value.user!.uid;
-
-        await getUserData(uid: value.user!.uid);
+        await getUserData(context,uid: value.user!.uid);
+        emit(LoginSuccessState());
 
        // await ServicesCubit.get(context).getAllServices(uid: uid);
 
@@ -43,13 +44,16 @@ class LoginCubit extends Cubit<LoginState>{
 
   }
 
-  Future getUserData({required dynamic uid})async {
+  Future getUserData(context,{required dynamic uid})async {
 
-   await FirebaseFirestore.instance.collection('users').doc(uid).get().then((value){
+   await FirebaseFirestore.instance.collection('users').doc(uid).get().then((value)async{
       if(value.data()!=null) {
         loginModel = LoginModel.fromJson(value.data()!);
-        print('email is ${loginModel.email}');
-        emit(LoginSuccessState());
+        if(loginModel.status==1){
+          await ServicesCubit.get(context).getAllServices(uid: loginModel.uid!);
+
+        }
+
         emit(GetUserDataSuccessState());
       }
 
@@ -58,6 +62,18 @@ class LoginCubit extends Cubit<LoginState>{
       emit(GetUserDataErrorState());
     });
 
+  }
+
+  void forgetPassword({required String email}){
+    try{
+      FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      MyToast.showToast(title: 'Password reset email sent!');
+
+
+    }
+    catch(error){
+      print('there is an error $error');
+    }
   }
 
 

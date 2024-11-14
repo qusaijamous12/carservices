@@ -19,43 +19,55 @@ class StationOwnerScreen extends StatefulWidget {
 }
 
 class _StationOwnerScreenState extends State<StationOwnerScreen> {
+
   @override
+
+  @override
+  void initState() {
+    print('33333${ServicesCubit.get(context).services.length}');
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     var cubit=ServicesCubit.get(context);
-    return SingleChildScrollView(
-      physics:const BouncingScrollPhysics(),
-      padding:const EdgeInsetsDirectional.all(kPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${LoginCubit.get(context).loginModel.userName?.toUpperCase()} Station ',
-            style: TextStyle(
-              color: Colors.blue[800],
-              fontSize:28,
-              fontWeight: FontWeight.bold
+    return BlocConsumer<ServicesCubit,ServicesState>(
+      listener: (context,state){
+
+      },
+      builder: (context,state){
+      return SingleChildScrollView(
+        physics:const BouncingScrollPhysics(),
+        padding:const EdgeInsetsDirectional.all(kPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${LoginCubit.get(context).loginModel.userName?.toUpperCase()} Station ',
+              style: TextStyle(
+                  color: Colors.blue[800],
+                  fontSize:28,
+                  fontWeight: FontWeight.bold
+              ),
             ),
-          ),
-          const SizedBox(
-            height: kPadding*2,
-          ),
-         BlocBuilder<ServicesCubit,ServicesState>(
-             builder: (context,state){
-               return  ConditionalBuilder(
-                   condition: cubit.services.length>0,
-                   builder: (context)=>ListView.separated(
-                       physics:const NeverScrollableScrollPhysics(),
-                       shrinkWrap: true,
-                       itemBuilder:(context,index)=>buildUserService(cubit.services[index]) ,
-                       separatorBuilder: (context,index)=>const SizedBox(
-                         height: kPadding,
-                       ),
-                       itemCount: cubit.services.length),
-                   fallback: (context)=>const Center(child: Text('There is no Cars !',style: TextStyle(fontSize: 20,fontWeight:FontWeight.w500 ),)));
-             })
-        ],
-      ),
+            const SizedBox(
+              height: kPadding*2,
+            ),
+            ConditionalBuilder(
+                condition: state is !LoadingGetAllServices,
+                builder: (context)=>ListView.separated(
+                    physics:const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder:(context,index)=>buildUserService(cubit.services[index]) ,
+                    separatorBuilder: (context,index)=>const SizedBox(
+                      height: kPadding,
+                    ),
+                    itemCount: cubit.services.length),
+                fallback: (context)=>const Center(child: Text('There is no Cars !',style: TextStyle(fontSize: 20,fontWeight:FontWeight.w500 ),)))
+          ],
+        ),
+      );
+      },
+
     );
   }
 
